@@ -1,0 +1,2 @@
+-- name: Super Mario Kart 64
+-- description: Mario Kart mod for the sm64ex-coop Gamemode Competition!\n\nChoose from 8 racers and a number of vehicle parts and race!\n\nEnjoy! :D\nBy Keeberghrh

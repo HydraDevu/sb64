@@ -5,7 +5,7 @@ HOST_ENV := $(patsubst MINGW%,MinGW,$(HOST_ENV))
 
 CC           := gcc
 CXX          := g++
-CFLAGS       := -I../include -I. -Wall -Wextra -Wno-unused-parameter -Wno-error=implicit-function-declaration -pedantic -std=c99 -O2 -s
+CFLAGS       := -I../include -I. -w -std=c99 -O2 -s
 LDFLAGS      := -lm
 ALL_PROGRAMS := n64graphics n64graphics_ci mio0 n64cksum textconv patch_libultra_math aifc_decode aiff_extract_codebook vadpcm_enc tabledesign extract_data_for_mio skyconv
 LIBAUDIOFILE := audiofile/libaudiofile.a

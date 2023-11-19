@@ -697,7 +697,7 @@ ifeq ($(WINDOWS_AUTO_BUILDER),1)
   CC      := cc
   CXX     := g++
 else ifeq ($(COMPILER),gcc)
-  CC      := $(CROSS)gcc
+  CC      := $(CROSS)gcc -fdiagnostics-color -w
   CXX     := $(CROSS)g++
   ifeq ($(OSX_BUILD),0)
 	EXTRA_CFLAGS += -Wno-unused-result -Wno-format-truncation
@@ -787,7 +787,7 @@ endif
 
 # Connfigure backend flags
 
-SDLCONFIG := $(CROSS)sdl2-config
+SDLCONFIG := $(CROSS)sdl2-config --prefix=/mingw64
 
 BACKEND_CFLAGS := -DRAPI_$(RENDER_API)=1 -DWAPI_$(WINDOW_API)=1 -DAAPI_$(AUDIO_API)=1
 # can have multiple controller APIs
@@ -833,7 +833,7 @@ endif
 # SDL can be used by different systems, so we consolidate all of that shit into this
 
 ifeq ($(SDL2_USED),1)
-  SDLCONFIG := $(CROSS)sdl2-config
+  SDLCONFIG := $(CROSS)sdl2-config --prefix=/mingw64
   BACKEND_CFLAGS += -DHAVE_SDL2=1
 else ifeq ($(SDL1_USED),1)
   SDLCONFIG := $(CROSS)sdl-config
@@ -1523,18 +1523,18 @@ $(GLOBAL_ASM_DEP).$(NON_MATCHING):
 # Compile C++ code
 $(BUILD_DIR)/%.o: %.cpp
 	$(call print,Compiling:,$<,$@)
-	$(V)$(CXX) $(PROF_FLAGS) -fsyntax-only $(EXTRA_CPP_FLAGS) $(EXTRA_CPP_INCLUDES) $(CFLAGS) -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(V)$(CXX) $(PROF_FLAGS) -fsyntax-only $(EXTRA_CPP_FLAGS) $(EXTRA_CPP_INCLUDES) $(CFLAGS) -fdiagnostics-color -w -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
 	$(V)$(CXX) $(PROF_FLAGS) -c $(EXTRA_CPP_FLAGS) $(EXTRA_CPP_INCLUDES) $(CFLAGS) -o $@ $<
 
 # Compile C code
 $(BUILD_DIR)/%.o: %.c
 	$(call print,Compiling:,$<,$@)
-	$(V)$(CC_CHECK) $(PROF_FLAGS) $(CC_CHECK_CFLAGS) -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(V)$(CC) $(PROF_FLAGS) -c $(CFLAGS) -o $@ $<
+	$(V)$(CC_CHECK) $(PROF_FLAGS) $(CC_CHECK_CFLAGS) -fdiagnostics-color -w -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(V)$(CC) $(PROF_FLAGS) -c $(CFLAGS) -fdiagnostics-color -w -o $@ $<
 $(BUILD_DIR)/%.o: $(BUILD_DIR)/%.c
 	$(call print,Compiling:,$<,$@)
-	$(V)$(CC_CHECK) $(PROF_FLAGS) $(CC_CHECK_CFLAGS) -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
-	$(V)$(CC) $(PROF_FLAGS) -c $(CFLAGS) -o $@ $<
+	$(V)$(CC_CHECK) $(PROF_FLAGS) $(CC_CHECK_CFLAGS) -fdiagnostics-color -w -MMD -MP -MT $@ -MF $(BUILD_DIR)/$*.d $<
+	$(V)$(CC) $(PROF_FLAGS) -c $(CFLAGS) -fdiagnostics-color -w -o $@ $<
 
 # Alternate compiler flags needed for matching
 ifeq ($(COMPILER),ido)
