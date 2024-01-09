@@ -50,7 +50,7 @@ struct DjuiThreePanel* djui_panel_menu_create(char* headerText) {
     struct DjuiThreePanel* panel = djui_three_panel_create(&gDjuiRoot->base, 64, 0, 0);
     djui_base_set_size_type(&panel->base, DJUI_SVT_ABSOLUTE, DJUI_SVT_RELATIVE);
     djui_base_set_size(&panel->base, DJUI_DEFAULT_PANEL_WIDTH, 1.0f);
-    djui_base_set_color(&panel->base, 0, 0, 0, 240);
+    djui_base_set_color(&panel->base, 0, 0, 0, 250);
     djui_base_set_border_color(&panel->base, 0, 0, 0, 200);
     djui_base_set_border_width(&panel->base, 8);
     djui_base_set_padding(&panel->base, 16, 16, 16, 16);

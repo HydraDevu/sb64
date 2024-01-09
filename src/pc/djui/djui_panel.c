@@ -80,10 +80,19 @@ struct DjuiPanel* djui_panel_add(struct DjuiBase* caller, struct DjuiThreePanel*
     // reset move amount
     sMoveAmount = 0;
 
+//TODO IBRA
     if (firstPanel) {
         djui_base_set_location(panelBase, 0, 0);
         djui_cursor_input_controlled_center(panel->defaultElementBase);
         djui_base_set_enabled(panel->base, true);
+        gPlayer1Controller->buttonDown =  gPlayer1Controller->buttonDown | A_BUTTON;
+        gPlayer1Controller->buttonDown =  B_BUTTON;
+        //gControllers[0]->controllerData->button =  A_BUTTON;
+        //gControllers[0]->controllerData->buttonDown =  A_BUTTON;
+        //gControllers[0]->buttonPressed =  A_BUTTON;
+        
+        gPlayer1Controller->buttonPressed =  CONT_DOWN;
+        gPlayer1Controller->buttonPressed =  B_BUTTON;
     } else {
         play_sound(SOUND_MENU_CLICK_FILE_SELECT, gGlobalSoundSource);
     }
@@ -118,7 +127,7 @@ void djui_panel_back(void) {
     djui_base_set_visible(sPanelList->base, true);
 
     // play a sound
-    play_sound(SOUND_MENU_CLICK_FILE_SELECT, gGlobalSoundSource);
+    // play_sound(SOUND_MENU_CLICK_FILE_SELECT, gGlobalSoundSource);
 
     gDjuiPanelJoinMessageVisible = false;
 }

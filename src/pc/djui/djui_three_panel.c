@@ -12,6 +12,7 @@ struct DjuiBase* djui_three_panel_get_header(struct DjuiThreePanel* threePanel) 
 }
 
 struct DjuiBase* djui_three_panel_get_body(struct DjuiThreePanel* threePanel) {
+    //TODO IBRA quelque chose a faire avec le children 3 ?
     struct DjuiBase* children[3] = { NULL };
     struct DjuiBaseChild* child = threePanel->base.child;
     for (int i = 0; i < 3; i++) {

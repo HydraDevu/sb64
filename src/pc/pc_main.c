@@ -352,9 +352,9 @@ void main_func(void) {
     char* version = get_version_local();
     char window_title[96] = { 0 };
 #ifdef GIT_HASH
-    snprintf(window_title, 96, "sm64ex-coop: %s [%s]", version, GIT_HASH);
+    // snprintf(window_title, 96, "sm64ex-coop: %s [%s]", version, GIT_HASH);
 #else
-    snprintf(window_title, 96, "sm64ex-coop: %s", version);
+    // snprintf(window_title, 96, "sm64ex-coop: %s", version);
 #endif
 
     gfx_init(wm_api, rendering_api, window_title);
@@ -373,8 +373,8 @@ void main_func(void) {
 
     if (gCLIOpts.Network == NT_CLIENT) {
         network_set_system(NS_SOCKET);
-        snprintf(gGetHostName, MAX_CONFIG_STRING, "%s", gCLIOpts.JoinIp);
-        snprintf(configJoinIp, MAX_CONFIG_STRING, "%s", gCLIOpts.JoinIp);
+        // snprintf(gGetHostName, MAX_CONFIG_STRING, "%s", gCLIOpts.JoinIp);
+        // snprintf(configJoinIp, MAX_CONFIG_STRING, "%s", gCLIOpts.JoinIp);
         configJoinPort = gCLIOpts.NetworkPort;
         network_init(NT_CLIENT, false);
     } else if (gCLIOpts.Network == NT_SERVER) {
@@ -393,6 +393,9 @@ void main_func(void) {
     network_player_init();
 
     thread5_game_loop(NULL);
+    keyboard_on_key_up(configKeyA);
+    keyboard_on_key_up(configKeyA);
+    keyboard_on_key_up(configKeyA);
 
     inited = true;
 

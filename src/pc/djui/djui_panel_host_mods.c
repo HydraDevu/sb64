@@ -22,8 +22,8 @@ static void djui_panel_host_mods_description_create() {
     struct DjuiThreePanel* panel = djui_three_panel_create(&gDjuiRoot->base, 64, bodyHeight, 0);
 
     djui_base_set_alignment(&panel->base, DJUI_HALIGN_RIGHT, DJUI_VALIGN_CENTER);
-    djui_base_set_size_type(&panel->base, DJUI_SVT_ABSOLUTE, DJUI_SVT_RELATIVE);
-    djui_base_set_size(&panel->base, DJUI_MOD_PANEL_WIDTH, 1.0f);
+    djui_base_set_size_type(&panel->base, DJUI_SVT_ABSOLUTE, DJUI_SVT_ABSOLUTE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
     djui_base_set_color(&panel->base, 0, 0, 0, 240);
     djui_base_set_border_color(&panel->base, 0, 0, 0, 200);
     djui_base_set_border_width(&panel->base, 8);
@@ -100,6 +100,8 @@ void djui_panel_host_mods_create(struct DjuiBase* caller) {
         ? DLANG(HOST_MODS, ROMHACKS)
         : DLANG(HOST_MODS, MODS)
     );
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
 
     struct DjuiBase* body = djui_three_panel_get_body(panel);
     {

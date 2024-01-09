@@ -45,23 +45,41 @@ static void djui_panel_host_player_text_change(struct DjuiBase* caller) {
 
 void djui_panel_host_settings_create(struct DjuiBase* caller) {
     struct DjuiThreePanel* panel = djui_panel_menu_create(DLANG(HOST_SETTINGS, SETTINGS));
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
     struct DjuiBase* body = djui_three_panel_get_body(panel);
+    djui_base_set_size_type(body, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(body, 1.0f, 1.0f);
     {
+        
+
+        struct DjuiCheckbox* checkboxintro = djui_checkbox_create(body, DLANG(HOST_SETTINGS, SKIP_INTRO_CUTSCENE), &configSkipIntro, NULL);
+        struct DjuiCheckbox* checkbox1 = djui_checkbox_create(body, DLANG(HOST_SETTINGS, ENABLE_CHEATS), &configEnableCheats, NULL);
+        struct DjuiCheckbox* checkbox2 = djui_checkbox_create(body, DLANG(HOST_SETTINGS, BUBBLE_ON_DEATH), &configBubbleDeath, NULL);
+
+        djui_base_set_enabled(&checkbox1->base, false);
+        djui_base_set_visible(&checkbox1->base, false);
+        djui_base_set_enabled(&checkbox2->base, false);
+        djui_base_set_visible(&checkbox2->base, false);
+
         char* iChoices[3] = { DLANG(HOST_SETTINGS, NONSOLID), DLANG(HOST_SETTINGS, SOLID), DLANG(HOST_SETTINGS, FRIENDLY_FIRE) };
-        djui_selectionbox_create(body, DLANG(HOST_SETTINGS, PLAYER_INTERACTION), iChoices, 3, &configPlayerInteraction, NULL);
+        struct DjuiSelectionbox* selectionbox1 = djui_selectionbox_create(body, DLANG(HOST_SETTINGS, PLAYER_INTERACTION), iChoices, 1, &configPlayerInteraction, NULL);
 
         sKnockbackIndex = (configPlayerKnockbackStrength <= 20)
                         ? 0
                         : ((configPlayerKnockbackStrength <= 40) ? 1 : 2);
         char* kChoices[3] = { DLANG(HOST_SETTINGS, WEAK), DLANG(HOST_SETTINGS, NORMAL), DLANG(HOST_SETTINGS, TOO_MUCH) };
-        djui_selectionbox_create(body, DLANG(HOST_SETTINGS, KNOCKBACK_STRENGTH), kChoices, 3, &sKnockbackIndex, djui_panel_host_settings_knockback_change);
+        struct DjuiSelectionbox* selectionbox2 = djui_selectionbox_create(body, DLANG(HOST_SETTINGS, KNOCKBACK_STRENGTH), kChoices, 1, &sKnockbackIndex, djui_panel_host_settings_knockback_change);
 
         char* lChoices[3] = { DLANG(HOST_SETTINGS, LEAVE_LEVEL), DLANG(HOST_SETTINGS, STAY_IN_LEVEL), DLANG(HOST_SETTINGS, NONSTOP) };
-        djui_selectionbox_create(body, DLANG(HOST_SETTINGS, ON_STAR_COLLECTION), lChoices, 3, &configStayInLevelAfterStar, NULL);
-
-        djui_checkbox_create(body, DLANG(HOST_SETTINGS, SKIP_INTRO_CUTSCENE), &configSkipIntro, NULL);
-        djui_checkbox_create(body, DLANG(HOST_SETTINGS, ENABLE_CHEATS), &configEnableCheats, NULL);
-        djui_checkbox_create(body, DLANG(HOST_SETTINGS, BUBBLE_ON_DEATH), &configBubbleDeath, NULL);
+        struct DjuiSelectionbox* selectionbox3 = djui_selectionbox_create(body, DLANG(HOST_SETTINGS, ON_STAR_COLLECTION), lChoices, 1, &configStayInLevelAfterStar, NULL);
+        djui_base_set_enabled(&selectionbox1->base, false);
+        djui_base_set_visible(&selectionbox1->base, false);
+        djui_base_set_enabled(&selectionbox2->base, false);
+        djui_base_set_visible(&selectionbox2->base, false);
+        djui_base_set_enabled(&selectionbox3->base, false);
+        djui_base_set_visible(&selectionbox3->base, false);
+        
 
         struct DjuiRect* rect1 = djui_rect_container_create(body, 32);
         {
@@ -80,6 +98,12 @@ void djui_panel_host_settings_create(struct DjuiBase* caller) {
             djui_inputbox_set_text(inputbox1, limitString);
             djui_interactable_hook_value_change(&inputbox1->base, djui_panel_host_player_text_change);
             sPlayerAmount = inputbox1;
+            
+            djui_base_set_enabled(&text1->base, false);
+            djui_base_set_visible(&text1->base, false);
+            djui_base_set_enabled(&inputbox1->base, false);
+            djui_base_set_visible(&inputbox1->base, false);
+        
         }
         
         djui_button_create(body, DLANG(MENU, BACK), DJUI_BUTTON_STYLE_BACK, djui_panel_menu_back);

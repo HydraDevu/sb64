@@ -95,6 +95,8 @@ void djui_panel_host_create(struct DjuiBase* caller) {
     struct DjuiThreePanel* panel = djui_panel_menu_create((gNetworkType == NT_SERVER)
             ? DLANG(HOST, SERVER_TITLE)
             : DLANG(HOST, HOST_TITLE));
+            djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+            djui_base_set_size(&panel->base, 1.0f, 1.0f);
     struct DjuiBase* body = djui_three_panel_get_body(panel);
     {
         char* nChoices[] = { DLANG(HOST, DIRECT_CONNECTION), DLANG(HOST, COOPNET) };
@@ -102,6 +104,8 @@ void djui_panel_host_create(struct DjuiBase* caller) {
         if (gNetworkType == NT_SERVER) {
             djui_base_set_enabled(&selectionbox1->base, false);
         }
+        djui_base_set_enabled(&selectionbox1->base, false);
+        djui_base_set_visible(&selectionbox1->base, false);
 
         struct DjuiRect* rect1 = djui_rect_container_create(body, 32);
         {
@@ -117,6 +121,8 @@ void djui_panel_host_create(struct DjuiBase* caller) {
                 if (gNetworkType == NT_SERVER) {
                     djui_base_set_enabled(&text1->base, false);
                 }
+                djui_base_set_enabled(&text1->base, false);
+                djui_base_set_visible(&text1->base, false);
 
                 sInputboxPort = djui_inputbox_create(&sRectPort->base, 32);
                 djui_base_set_size_type(&sInputboxPort->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);
@@ -131,11 +137,15 @@ void djui_panel_host_create(struct DjuiBase* caller) {
                 } else {
                     djui_base_set_enabled(&sInputboxPort->base, (configNetworkSystem == NS_SOCKET));
                 }
+                djui_base_set_enabled(&sInputboxPort->base, false);
+                djui_base_set_visible(&sInputboxPort->base, false);
             }
 
             sRectPassword = djui_rect_container_create(&rect1->base, 32);
             djui_base_set_location(&sRectPassword->base, 0, 0);
             djui_base_set_visible(&sRectPassword->base, (configNetworkSystem == NS_COOPNET));
+            djui_base_set_enabled(&sRectPassword->base, false);
+            djui_base_set_visible(&sRectPassword->base, false);
             {
                 struct DjuiText* text1 = djui_text_create(&sRectPassword->base, DLANG(HOST, PASSWORD));
                 djui_base_set_size_type(&text1->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);
@@ -145,6 +155,8 @@ void djui_panel_host_create(struct DjuiBase* caller) {
                 if (gNetworkType == NT_SERVER) {
                     djui_base_set_enabled(&text1->base, false);
                 }
+                djui_base_set_enabled(&text1->base, false);
+                djui_base_set_visible(&text1->base, false);
 
                 sInputboxPassword = djui_inputbox_create(&sRectPassword->base, 32);
                 sInputboxPassword->passwordChar[0] = '#';
@@ -160,6 +172,8 @@ void djui_panel_host_create(struct DjuiBase* caller) {
                 } else {
                     djui_base_set_enabled(&sInputboxPassword->base, (configNetworkSystem == NS_COOPNET));
                 }
+                djui_base_set_enabled(&sInputboxPassword->base, false);
+                djui_base_set_visible(&sInputboxPassword->base, false);
             }
         }
         
@@ -170,12 +184,16 @@ void djui_panel_host_create(struct DjuiBase* caller) {
             djui_base_set_color(&text1->base, 200, 200, 200, 255);
             djui_base_set_size(&text1->base, 0.585f, 64);
             djui_base_set_alignment(&text1->base, DJUI_HALIGN_LEFT, DJUI_VALIGN_TOP);
+            djui_base_set_enabled(&text1->base, false);
+            djui_base_set_visible(&text1->base, false);
 
             char starString[32] = { 0 };
             snprintf(starString, 32, "%c x%d", '~' + 1, save_file_get_total_star_count(configHostSaveSlot - 1, 0, 24));
             struct DjuiButton* button1 = djui_button_create(&rect2->base, starString, DJUI_BUTTON_STYLE_NORMAL, djui_panel_host_save_create);
             djui_base_set_size(&button1->base, 0.4f, 32);
             djui_base_set_alignment(&button1->base, DJUI_HALIGN_RIGHT, DJUI_VALIGN_TOP);
+            djui_base_set_enabled(&button1->base, false);
+            djui_base_set_visible(&button1->base, false);
         }
 
         djui_button_create(body, DLANG(HOST, SETTINGS), DJUI_BUTTON_STYLE_NORMAL, djui_panel_host_settings_create);
@@ -185,6 +203,11 @@ void djui_panel_host_create(struct DjuiBase* caller) {
 
         struct DjuiButton* button3 = djui_button_create(body, DLANG(HOST, ROMHACKS), DJUI_BUTTON_STYLE_NORMAL, djui_panel_host_mods_create);
         button3->base.tag = 1;
+
+        djui_base_set_enabled(&button2->base, false);
+        djui_base_set_visible(&button2->base, false);
+        djui_base_set_enabled(&button3->base, false);
+        djui_base_set_visible(&button3->base, false);
 
         struct DjuiRect* rect3 = djui_rect_container_create(body, 64);
         {

@@ -58,6 +58,10 @@ void djui_panel_host_message_create(struct DjuiBase* caller) {
 
     struct DjuiThreePanel* panel = djui_panel_menu_create(DLANG(HOST_MESSAGE, INFO_TITLE));
     struct DjuiBase* body = djui_three_panel_get_body(panel);
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
+    djui_base_set_size_type(body, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(body, 1.0f, 1.0f);
     {
         struct DjuiText* text1 = djui_text_create(body, warningMessage);
         djui_base_set_size_type(&text1->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);

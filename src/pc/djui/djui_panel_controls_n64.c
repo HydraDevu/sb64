@@ -8,6 +8,10 @@ void djui_panel_controls_n64_create(struct DjuiBase* caller) {
 
     struct DjuiThreePanel* panel = djui_panel_menu_create(DLANG(CONTROLS, CONTROLS));
     struct DjuiBase* body = djui_three_panel_get_body(panel);
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
+    djui_base_set_size_type(body, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(body, 1.0f, 1.0f);
     {
         struct DjuiFlowLayout* bindBody = djui_flow_layout_create(body);
         djui_base_set_size_type(&bindBody->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);

@@ -1,4 +1,3 @@
-
 /**
  * Behavior for bhvKoopa and bhvKoopaRaceEndpoint.
  * bhvKoopa includes normal, unshelled, tiny, and Koopa the Quick.
@@ -97,67 +96,22 @@ static void bhv_koopa_the_quick_run_once(void) {
 /**
  * Initialization function.
  */
-void bhv_koopa_init(void) {
-    if ((o->oKoopaMovementType = o->oBehParams2ndByte) == KOOPA_BP_TINY) {
-        // Tiny koopa in THI
-        o->oKoopaMovementType = KOOPA_BP_NORMAL;
-        o->oKoopaAgility = 1.6f / 3.0f;
-        o->oDrawingDistance = 1500.0f;
-        cur_obj_scale(0.8f);
-        o->oGravity = -6.4f / 3.0f;
-    } else if (o->oKoopaMovementType >= KOOPA_BP_KOOPA_THE_QUICK_BASE) {
-        // Koopa the Quick. Race index is 0 for BoB and 1 for THI
-        o->oKoopaTheQuickRaceIndex = o->oKoopaMovementType - KOOPA_BP_KOOPA_THE_QUICK_BASE;
-        o->oKoopaAgility = 4.0f;
-        cur_obj_scale(3.0f);
-    } else {
-        o->oKoopaAgility = 1.0f;
-    }
+#define KOOPA_ACT_FOLLOW_PATH 100  // Un exemple de numéro d'action unique
 
-    if (o->oKoopaMovementType >= KOOPA_BP_KOOPA_THE_QUICK_BASE) {
-        // koopa the quick
-        o->parentObj = cur_obj_nearest_object_with_behavior(bhvKoopaRaceEndpoint);
-        struct SyncObject* so  = sync_object_init(o, SYNC_DISTANCE_ONLY_EVENTS);
-        if (so) {
-            so->on_received_post   = bhv_koopa_the_quick_on_received_post;
-            so->on_sent_pre        = bhv_koopa_the_quick_on_sent_pre;
-            so->override_ownership = bhv_koopa_the_quick_override_ownership;
-            sync_object_init_field(o, &koopaPathedStartWaypoint);
-            sync_object_init_field(o, &koopaPathedPrevWaypoint);
-            sync_object_init_field(o, &koopaShotFromCannon);
-            sync_object_init_field(o, &o->oPathedPrevWaypointFlags);
-            sync_object_init_field(o, &o->oPathedTargetPitch);
-            sync_object_init_field(o, &o->oPathedTargetYaw);
-            sync_object_init_field(o, &o->oPosX);
-            sync_object_init_field(o, &o->oPosY);
-            sync_object_init_field(o, &o->oPosZ);
-            sync_object_init_field(o, &o->oVelX);
-            sync_object_init_field(o, &o->oVelY);
-            sync_object_init_field(o, &o->oVelZ);
-            sync_object_init_field(o, &o->oAction);
-            sync_object_init_field(o, &o->oPrevAction);
-            sync_object_init_field(o, &o->oSubAction);
-            sync_object_init_field(o, &o->oTimer);
-            sync_object_init_field(o, &o->oKoopaAgility);
-            sync_object_init_field(o, &o->parentObj->oKoopaRaceEndpointRaceBegun);
-            sync_object_init_field(o, &o->parentObj->oKoopaRaceEndpointRaceStatus);
-            sync_object_init_field(o, &o->oForwardVel);
-            sync_object_init_field(o, &o->oMoveAngleYaw);
-            sync_object_init_field(o, &o->areaTimer);
-        }
-        o->areaTimerType = AREA_TIMER_TYPE_MAXIMUM;
-        o->areaTimer = 0;
-        o->areaTimerDuration = 60;
-        o->areaTimerRunOnceCallback = bhv_koopa_the_quick_run_once;
-    } else {
-        // normal koopa
-        sync_object_init(o, 4000.0f);
-        sync_object_init_field(o, &o->oKoopaTargetYaw);
-        sync_object_init_field(o, &o->oKoopaCountdown);
-        sync_object_init_field(o, &o->oKoopaMovementType);
-        sync_object_init_field(o, &o->oKoopaUnshelledTimeUntilTurn);
-    }
+void bhv_koopa_init(void) {
+    o->oKoopaMovementType = KOOPA_BP_NORMAL; // Par défaut, utilisez le type de mouvement normal
+    o->oKoopaAgility = 1.0f; // Réglez l'agilité par défaut
+    cur_obj_scale(1.0f); // Réglez l'échelle par défaut
+
+    // Génère une vitesse aléatoire entre 40 et 100 et stocke dans un champ existant
+    // Utilisez un champ générique tel que oBehParams2ndByte pour stocker la vitesse
+    o->oBehParams2ndByte = 40 + (rand() % 101); // 61 car 100 - 40 = 60 et +1 pour inclure 100
+
+    // Assurez-vous que le Koopa suit le chemin dès le début
+    o->oAction = KOOPA_ACT_FOLLOW_PATH;
 }
+
+
 
 /**
  * Play the appropriate footstep sound on the two provided animation frames.
@@ -926,6 +880,67 @@ static void koopa_the_quick_update(void) {
 /**
  * Update function.
  */
+
+// Exemple de déclaration de trajectoire
+const struct Waypoint custom_koopa_path[] = {
+    { 0,  9233,  1879, -9630 }, //Premier WP
+    { 1, 10919,  1879, -9656 },
+    { 2, 13067,  1879, -9628 },
+    { 3, 15461,  1879, -9563 },
+    { 4, 15917,  1879, -9476 },
+    { 5, 17028,  1879, -9145 },
+    { 6, 17647,  1879, -8373 },
+    { 7, 18120,  1879, -7154 },
+    { 8, 18038,  1879, -4991 },
+    { 9, 16469,  1889,  3785 }, //2ieme
+    { 10, 15405,  1926, 4598 },
+    { 11, 13505,  2095, 5859},
+    { 12, 12588,  2303, 7187 },
+    { 13, 11948,  2413, 8291 },
+    { 14, 11360,  2262, 10667 },
+    { 15,  9494,  2818, 12570 }, //3
+    { 16, 7850,  2722, 12347 },
+    { 17, 5836,  2655, 11407 },
+    { 18, 3167,  2484, 9217 },
+    { 19, 617,  2284, 9305 },
+    { 20, -907,  2176, 10048 },
+    { 21, -2487,  2113, 10858 },  //4
+    { 22, -4180,  2032, 10276 },
+    { 23, -5207,  1949, 8530 },
+    { 24, -5535,  1886, 6610 },
+    { 25, -5538,  1879,  4955 },  //5
+    { 26, -5474,  1884,  -347 },//6
+    { 27, -5604,  2474, -5526 },//7
+    { 28, -5946,  2652, -6917 },
+    { 29, -7056,  2718, -7085 },
+    { 30, -8191,  2717, -4467 },
+    { 31, -9314,  2861, -2819 },
+    { 32, -10816, 3044, -1523 },
+    { 33, -12335, 3242,  -586 },//8
+    { 34, -13219, 3394, 815 },
+    { 35, -12543, 3097, 2042 },
+    { 36, -9356, 3097, 2500 },
+    { 37, -4237, 3016, 2437 },
+    { 38, -2705, 2866, 2150},
+    { 39, -1969,  2733,  1606 },//9
+    { 40, -912, 2424, 143},
+    { 41, 483, 2248, -77},
+    { 42, 2123, 2077, 51},
+    { 43, 3418, 1906, -1252},
+    { 44, 5925, 1879, -2779},
+    { 45, 9045,  1879, -3323 },//10
+    { 46, 9863, 1879, -4370},
+    { 47, 7574, 1879, -5421},
+    { 48, 3774, 1879, -5262},
+    { 49, 1979,  1879, -5619 },//11
+    { 50, 1339, 1879, -6946},
+    { 51, 1323, 1879, -8629},
+    { 52, 2798, 1879, -9560},
+    { 53, 5379, 1879, -9653},
+    { 54, 8633, 1879, -9721},
+    { -1 },
+};
+
 void bhv_koopa_update(void) {
     // PARTIAL_UPDATE
     o->oDeathSound = SOUND_OBJ_KOOPA_FLYGUY_DEATH;
@@ -949,7 +964,8 @@ void bhv_koopa_update(void) {
                 koopa_unshelled_update();
                 break;
             case KOOPA_BP_NORMAL:
-                koopa_shelled_update();
+                // Faites suivre un chemin au Koopa normal
+                o->oAction = KOOPA_ACT_FOLLOW_PATH;
                 break;
             case KOOPA_BP_KOOPA_THE_QUICK_BOB:
             case KOOPA_BP_KOOPA_THE_QUICK_THI:
@@ -960,8 +976,68 @@ void bhv_koopa_update(void) {
         o->oAnimState = 1;
     }
 
+    // Gestion des actions
+    switch (o->oAction) {
+        // ... (autres cas)
+
+        case KOOPA_ACT_FOLLOW_PATH:
+            koopa_follow_path();
+            break;
+    }
+
     obj_face_yaw_approach(o->oMoveAngleYaw, 0x600);
 }
+#define TOTAL_WAYPOINTS 55
+#define MIN_SPEED 125.0f
+#define MAX_SPEED 140.0f
+#define TURN_SPEED 0x400 // Vitesse de rotation
+#define DISTANCE_THRESHOLD 100 // Distance pour ralentir
+#define KOOPA_COLLISION_DISTANCE 500.0f // Distance pour vérifier la collision
+#define KOOPA_TURN_ANGLE 0x8000
+
+void koopa_handle_collision(void) {
+    // Détecter la collision avec le mur
+    if (o->oMoveFlags & OBJ_MOVE_HIT_WALL) {
+        // Réagir à la collision en changeant l'angle de déplacement
+        o->oMoveAngleYaw += KOOPA_TURN_ANGLE;
+    }
+}
+
+void koopa_follow_path(void) {
+    struct Waypoint* path = (struct Waypoint*) custom_koopa_path;
+
+    if (o->oPathedStartWaypoint == NULL) {
+        o->oPathedStartWaypoint = path;
+        o->oPathedPrevWaypoint = &path[TOTAL_WAYPOINTS - 1];
+    }
+
+    // Vérifier si le chemin a été atteint
+    if (cur_obj_follow_path(0) == PATH_REACHED_END) {
+        o->oPathedStartWaypoint = path;
+        o->oPathedPrevWaypoint = &path[TOTAL_WAYPOINTS - 1];
+    }
+
+    // Ajustement de la vitesse
+    float distanceToNextWaypoint = dist_between_objects(o, o->oPathedStartWaypoint);
+    float speed = MAX_SPEED;
+    if (distanceToNextWaypoint < DISTANCE_THRESHOLD) {
+        speed = MIN_SPEED + (distanceToNextWaypoint / DISTANCE_THRESHOLD) * (MAX_SPEED - MIN_SPEED);
+    }
+
+    // Rotation précise vers le waypoint cible
+    int angleDiff = abs_angle_diff(o->oMoveAngleYaw, o->oPathedTargetYaw);
+    if (angleDiff > TURN_SPEED) {
+        angleDiff = TURN_SPEED;
+    }
+    cur_obj_rotate_yaw_toward(o->oPathedTargetYaw, angleDiff);
+
+    // Appliquer la vitesse
+    o->oForwardVel = o->oKoopaAgility * o->oBehParams2ndByte;
+
+
+    koopa_handle_collision();
+}
+
 
 /**
  * Update function for bhvKoopaRaceEndpoint.

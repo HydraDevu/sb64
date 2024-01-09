@@ -5,7 +5,11 @@
 
 void djui_panel_confirm_create(struct DjuiBase* caller, char* title, char* message, void (*on_yes_click)(struct DjuiBase*)) {
     struct DjuiThreePanel* panel = djui_panel_menu_create(title);
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
     struct DjuiBase* body = djui_three_panel_get_body(panel);
+    djui_base_set_size_type(body, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(body, 1.0f, 1.0f);
     {
         struct DjuiText* text = djui_text_create(body, message);
         djui_base_set_size_type(&text->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);

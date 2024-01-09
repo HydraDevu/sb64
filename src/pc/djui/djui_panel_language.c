@@ -68,7 +68,7 @@ static void djui_panel_language_destroy(UNUSED struct DjuiBase* caller) {
         }
     }
     if (configLanguage[0] == '\0') {
-        snprintf(configLanguage, MAX_CONFIG_STRING, "%s", "English");
+        snprintf(configLanguage, MAX_CONFIG_STRING, "%s", "French");
     }
     gPanelLanguageOnStartup = false;
 }
@@ -76,6 +76,10 @@ static void djui_panel_language_destroy(UNUSED struct DjuiBase* caller) {
 void djui_panel_language_create(struct DjuiBase* caller) {
     struct DjuiThreePanel* panel = djui_panel_menu_create(DLANG(LANGUAGE, LANGUAGE));
     struct DjuiBase* body = djui_three_panel_get_body(panel);
+    djui_base_set_size_type(&panel->base, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(&panel->base, 1.0f, 1.0f);
+    djui_base_set_size_type(body, DJUI_SVT_RELATIVE, DJUI_SVT_RELATIVE);
+    djui_base_set_size(body, 1.0f, 1.0f);
     sLanguageChanged = false;
 
     {
@@ -138,8 +142,8 @@ void djui_panel_language_create(struct DjuiBase* caller) {
         panel->bodySize.value = paginated->base.height.value + 16 + 64;
 
 skip_langs:
-        djui_button_create(body, DLANG(MENU, BACK), DJUI_BUTTON_STYLE_BACK, djui_panel_menu_back);
-
+        struct DjuiButton* button1 = djui_button_create(body, DLANG(MENU, BACK), DJUI_BUTTON_STYLE_BACK, djui_panel_menu_back);
+        djui_cursor_input_controlled_center(&button1->base);
     }
 
     struct DjuiPanel* p = djui_panel_add(caller, panel, NULL);

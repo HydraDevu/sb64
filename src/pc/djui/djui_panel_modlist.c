@@ -40,7 +40,8 @@ void djui_panel_modlist_create(UNUSED struct DjuiBase* caller) {
 
     for (int i = 0; i < gActiveMods.entryCount; i++) {
         struct Mod* mod = gActiveMods.entries[i];
-
+        //TODO IBRA
+        mod->enabled = true;
         struct DjuiFlowLayout* row = djui_flow_layout_create(body);
         djui_base_set_size_type(&row->base, DJUI_SVT_RELATIVE, DJUI_SVT_ABSOLUTE);
         djui_base_set_size(&row->base, 1.0f, 32.0f);

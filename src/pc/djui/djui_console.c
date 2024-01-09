@@ -114,6 +114,7 @@ struct DjuiConsole* djui_console_create(void) {
     struct DjuiConsole* console = calloc(1, sizeof(struct DjuiConsole));
     struct DjuiBase* base = &console->base;
 
+    //TODO IBRA djui_base_set_visible a false ?
     djui_base_init(NULL, base, djui_console_render, djui_console_destroy);
     djui_base_set_size_type(base, DJUI_SVT_ABSOLUTE, DJUI_SVT_ABSOLUTE);
     djui_base_set_size(base, gDjuiRoot->base.width.value, gDjuiRoot->base.height.value * 0.6f);

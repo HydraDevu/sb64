@@ -13,8 +13,9 @@
 
 struct PCCLIOptions gCLIOpts;
 
+// TODO IBRA a suppr ?
 static void print_help(void) {
-    printf("\nsm64ex-coop\n");
+    printf("\nSuperBilly64\n");
     printf("%-20s\tEnables the cheat menu.\n", "--cheats");
     printf("%-20s\tSaves the configuration file as CONFIGNAME.\n", "--configfile CONFIGNAME");
     printf("%-20s\tSets additional data directory name (only 'res' is used by default).\n", "--gamedir DIRNAME");
