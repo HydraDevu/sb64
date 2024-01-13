@@ -1,0 +1,15 @@
+extern const GeoLayout kartf1_geo[];
+extern Lights1 Kartf1_glassyorange_lights;
+extern Vtx Kartf1_WheelFront_011_black_0_mesh_layer_1_vtx_0[1177];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1_tri_0[];
+extern Vtx Kartf1_WheelFront_011_black_0_mesh_layer_1_vtx_1[2088];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1_tri_1[];
+extern Vtx Kartf1_WheelFront_011_black_0_mesh_layer_1_vtx_2[140];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1_tri_2[];
+extern Vtx Kartf1_WheelFront_011_black_0_mesh_layer_1_vtx_3[101];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1_tri_3[];
+extern Vtx Kartf1_WheelFront_011_black_0_mesh_layer_1_vtx_4[25];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1_tri_4[];
+extern Gfx mat_Kartf1_glassyorange[];
+extern Gfx Kartf1_WheelFront_011_black_0_mesh_layer_1[];
+extern Gfx Kartf1_material_revert_render_settings[];
